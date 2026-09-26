@@ -1,0 +1,149 @@
+<!doctype html>
+<!--
+  Where a confirmation email's link lands: Supabase confirms the address,
+  then redirects here, the project's Site URL (Authentication → URL
+  Configuration). Hosted on the owner's domain, not built by Flutter.
+
+  Supabase appends the new session's tokens to the URL's hash on success,
+  and error details to the hash or query on failure. The page reads them
+  only to pick a message, then strips them from the address bar and
+  history. It loads nothing from anywhere else.
+
+  Colors are Violet's tokens, and Academia's in dark mode
+  (design/tokens.json); copy them again if those tokens change.
+-->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="referrer" content="no-referrer">
+<meta name="robots" content="noindex">
+<title>Email confirmed · Notated Slides</title>
+<link rel="icon" href="icon.png">
+<style>
+  :root {
+    color-scheme: light dark;
+    --surface: #e0e5ec;
+    --panel: #e0e5ec;
+    --ink: #3d4852;
+    --ink-muted: #6b7280;
+    --accent: #6c63ff;
+    --danger: #ac3e51;
+    --shadow-raised: 9px 9px 16px rgba(163,177,198,0.6), -9px -9px 16px rgba(255,255,255,0.5);
+    --shadow-raised-sm: 5px 5px 10px rgba(163,177,198,0.6), -5px -5px 10px rgba(255,255,255,0.5);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --surface: #1c1714;
+      --panel: #251e19;
+      --ink: #e8dfd4;
+      --ink-muted: #9c8b7a;
+      --accent: #c9a962;
+      --danger: #c76474;
+      --shadow-raised: 9px 9px 16px rgba(8,6,5,0.65), -9px -9px 16px rgba(74,63,53,0.55);
+      --shadow-raised-sm: 5px 5px 10px rgba(8,6,5,0.65), -5px -5px 10px rgba(74,63,53,0.55);
+    }
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; min-height: 100%; }
+  body {
+    min-height: 100vh;
+    min-height: 100dvh;
+    display: grid;
+    place-items: center;
+    padding: 24px 16px;
+    background: var(--surface);
+    color: var(--ink);
+    font-family: "Noto Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+  main {
+    width: 100%;
+    max-width: 400px;
+    padding: 40px 32px 36px;
+    background: var(--panel);
+    border-radius: 2px;
+    box-shadow: var(--shadow-raised);
+    text-align: center;
+  }
+  .icon {
+    width: 72px;
+    height: 72px;
+    border-radius: 16px;
+    box-shadow: var(--shadow-raised-sm);
+    display: block;
+    margin: 0 auto 28px;
+  }
+  .mark {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 8px;
+    font-size: 12px;
+    line-height: 16px;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--accent);
+  }
+  .mark svg { width: 16px; height: 16px; flex: none; }
+  .error .mark { color: var(--danger); }
+  h1 {
+    margin: 0 0 12px;
+    font-size: 24px;
+    line-height: 30px;
+    font-weight: 800;
+    text-wrap: balance;
+  }
+  p {
+    margin: 0;
+    font-size: 14px;
+    line-height: 20px;
+    color: var(--ink-muted);
+    text-wrap: pretty;
+  }
+  p + p { margin-top: 10px; }
+  [hidden] { display: none !important; }
+</style>
+</head>
+<body>
+<main id="ok">
+  <img class="icon" src="icon.png" alt="" width="72" height="72">
+  <div class="mark">
+    <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 8.5l3.2 3L13 4.5"/></svg>
+    Email confirmed
+  </div>
+  <h1>You're all set</h1>
+  <p>Go back to Notated Slides and sign in with your email and password to turn on sync.</p>
+  <p>You can close this page.</p>
+</main>
+<main id="failed" class="error" hidden>
+  <img class="icon" src="icon.png" alt="" width="72" height="72">
+  <div class="mark">
+    <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="8" cy="8" r="6"/><path d="M8 5v3.5M8 11h0"/></svg>
+    Link didn't work
+  </div>
+  <h1>This link has expired or was already used</h1>
+  <p>Try signing in to Notated Slides. If your email is already confirmed, that's all you need.</p>
+  <p>If the app still asks you to confirm, create your account again with the same email to get a new link.</p>
+</main>
+<script>
+  (function () {
+    var hash = new URLSearchParams(location.hash.slice(1));
+    var query = new URLSearchParams(location.search);
+    var failed = hash.has("error") || hash.has("error_code") ||
+      query.has("error") || query.has("error_code");
+    if (failed) {
+      document.getElementById("ok").hidden = true;
+      document.getElementById("failed").hidden = false;
+      document.title = "Link didn't work · Notated Slides";
+    }
+    // Keep the session tokens out of the address bar, history and any
+    // copied link.
+    if (location.hash || location.search) {
+      history.replaceState(null, "", location.pathname);
+    }
+  })();
+</script>
+</body>
+</html>
