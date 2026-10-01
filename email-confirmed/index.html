@@ -18,7 +18,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="referrer" content="no-referrer">
 <meta name="robots" content="noindex">
-<title>Email confirmed · Notated Slides</title>
+<title>Email confirmed · Notated: Slides</title>
 <link rel="icon" href="icon.png">
 <style>
   :root {
@@ -114,7 +114,7 @@
     Email confirmed
   </div>
   <h1>You're all set</h1>
-  <p>Go back to Notated Slides and sign in with your email and password to turn on sync.</p>
+  <p>Go back to Notated: Slides and sign in with your email and password to turn on sync.</p>
   <p>You can close this page.</p>
 </main>
 <main id="failed" class="error" hidden>
@@ -124,7 +124,7 @@
     Link didn't work
   </div>
   <h1>This link has expired or was already used</h1>
-  <p>Try signing in to Notated Slides. If your email is already confirmed, that's all you need.</p>
+  <p>Try signing in to Notated: Slides. If your email is already confirmed, that's all you need.</p>
   <p>If the app still asks you to confirm, create your account again with the same email to get a new link.</p>
 </main>
 <script>
@@ -136,7 +136,7 @@
     if (failed) {
       document.getElementById("ok").hidden = true;
       document.getElementById("failed").hidden = false;
-      document.title = "Link didn't work · Notated Slides";
+      document.title = "Link didn't work · Notated: Slides";
     }
     // Keep the session tokens out of the address bar, history and any
     // copied link.
